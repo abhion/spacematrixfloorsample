@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/tooltipster.bundle.min.css">
+    <link rel="stylesheet" href="assets/css/tooltipster-sideTip-shadow.min.css">
+    <link rel="stylesheet" href="assets/css/tooltipster-sideTip-punk.min.css">
+
+    <style>
+      .tooltipster-sidetip.tooltipster-shadow.tooltipster-shadow-customized .tooltipster-box {
+          /* border: 3px solid; */
+      }
+
+    </style>
+</head>
+
+<body>
+    <div style="width: 1200px; height: 90vh;">
+        <img src="assets/images/smfloor.jpeg" usemap="#image-map" style='height: auto; width: 100%;'>
+
+        <map name="image-map">
+                <area id="room1Temp" target="" alt="Room 1 temperature" title="Loading..." href="#" coords="638,655,608,673,622,686,651,666" shape="poly">
+
+            <area id="room2Temp" target="" alt="Room 2 temperature" title="Room 2 temperature" href="#"
+                coords="362,565,393,542,408,553,379,576" shape="poly">
+            <area id="room1Id" target="" alt="Room 1" title="Room 1" href="#" coords="513,787,542,810,568,779,544,758"
+                shape="poly">
+            <area id="room2Id" target="" alt="Room 2" title="Room 2" href="#" coords="237,666,289,635" shape="rect">
+        </map>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="assets/js/imageMapResizer.min.js"></script>
+    <script src="assets/js/tooltipster.bundle.min.js"></script>
+
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
+    <script src="assets/js/paho-mqtt.js"></script>
+    <script src="assets/js/index.js"></script>
+    <script src="assets/js/connecttobroker.js"></script>
+
+  
+
+</body>
+
+</html>
