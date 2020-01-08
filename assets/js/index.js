@@ -30,3 +30,8 @@ $('#room1Temp').tooltipster({
 $('#room1Temp').tooltipster('show');
 
 $('map').imageMapResize();
+$('#room1Id').tooltipster('content', 'Room 1');
+$('#room2Id').tooltipster('content', 'Room 2');
+
+// setTimeout(() => {
+// }, 2000);

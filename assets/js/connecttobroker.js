@@ -28,12 +28,14 @@ function onConnectionLost(responseObject) {
     }
 }
 function onMessageArrived(message) {
-    $('#room1Id').tooltipster('content', 'Room 1');
-    $('#room2Id').tooltipster('content', 'Room 2');
+    // $('#room1Id').tooltipster('content', 'Room 1');
+    // $('#room2Id').tooltipster('content', 'Room 2');
     if(message["topic"] === "room/temp"){
         let supplyTemp = (+message["payloadString"]).toFixed(2);
+        $('#suppTemp').text('Supply temp: ' + supplyTemp + '°C');
+        $('#retTemp').text('Return temp: ' + supplyTemp + '°C');
         $('#room1Temp').tooltipster(
-            'content', 'temp: '+supplyTemp + '°C')
+            'content',  $('#some'))
         
     }
 }
