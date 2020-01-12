@@ -29,9 +29,10 @@ let lastMonthPieChartCtx = document.querySelector('#lastMonthPieChart').getConte
 let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getContext('2d');
 
 window.addEventListener('orientationchange', function(){
-  setTimeout(() => {
-    $('map').imageMapResize();
-  }, 1000);
+  $('#mapster_wrap_0').css({'width':'100%', 'height': ''});
+  $('#floorImgId').css({'width':'100%', 'height': ''});
+   initFloorwiseDisplay();
+ 
 })
 
 
@@ -272,7 +273,7 @@ $(document).ready(function () {
     groundFloorMainSelect.addEventListener('click', function(){
         mainPageContainer.classList.add('hide');
         floorContainer.classList.remove('hide');
-        initFloorwiseDisplay();
+        // initFloorwiseDisplay();
     })
 
     //Minimize a floor's description and show the VAV's name
