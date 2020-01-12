@@ -29,8 +29,7 @@ let lastMonthPieChartCtx = document.querySelector('#lastMonthPieChart').getConte
 let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getContext('2d');
 
 window.addEventListener('orientationchange', function(){
-  $('#mapster_wrap_0').css({'width':'100%', 'height': ''});
-  $('#floorImgId').css({'width':'100%', 'height': ''});
+   
    initFloorwiseDisplay();
  
 })
