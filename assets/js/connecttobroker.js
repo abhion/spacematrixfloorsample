@@ -32,10 +32,19 @@ function onMessageArrived(message) {
     // $('#room2Id').tooltipster('content', 'Room 2');
     if(message["topic"] === "room/temp"){
         let supplyTemp = (+message["payloadString"]).toFixed(2);
-        $('#suppTemp').text('Supply temp: ' + supplyTemp + '°C');
-        $('#retTemp').text('Return temp: ' + supplyTemp + '°C');
-        $('#room1Temp').tooltipster(
-            'content',  $('#some'))
+        // $('#suppTemp').text('Supply temp: ' + supplyTemp + '°C');
+        // $('#retTemp').text('Return temp: ' + supplyTemp + '°C');
+
+        // $('#receptionAreaId').tooltipster('content',  $('#some'));
+        // $('#excelRoomId').tooltipster('content',  $('#some'));
+        // $('#respRoomId').tooltipster('content',  $('#some'));
+        // $('#innovationRoomId').tooltipster('content',  $('#some'));
+        // $('#pantryRoomId').tooltipster('content',  $('#some'));
+        // $('#valueRoomId').tooltipster('content',  $('#some'));
+        // $('#liftLobbyRoomId').tooltipster('content',  $('#some'));
+        // $('#duct1Id').tooltipster('content',  $('#some'));
+        // $('#duct2Id').tooltipster('content',  $('#some'));
+        // $('#vrfFanId').tooltipster('content',  $('#some'));
         
     }
 }
