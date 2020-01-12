@@ -30,7 +30,14 @@ let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getConte
 
 window.addEventListener('orientationchange', function(){
    
-   initFloorwiseDisplay();
+    setTimeout(() => {
+      $('.mapster_el').css({'width': '1280px', 'height': '720px'})
+      $('map').imageMapResize();
+      initializeTooltips();
+      $('#excelVavId').tooltipster('show');
+      $('#excelVavId').tooltipster('content', 'adf');
+    }, 3000);
+   initFloorwiseDisplay(true);
    
  
 })
@@ -322,16 +329,21 @@ function highlightAll(){
     
 }
 //highlight a control type(vavs, sensors... when a view control is clicked)
-function highlightSpecificArea(controlType) {
+function highlightSpecificArea(controlType, dontRemoveAllTooltip) {
     
     removeAllHighlight();
-    removeAllTooltip(roomNameIds);
+
+    if(!dontRemoveAllTooltip){
+      removeAllTooltip(roomNameIds);
+
+    }
     //Highlight vav
     if(controlType == 1){
         $('.vav-cl').each(function (el) {
             
 
             $('#' + this.id).mapster('set', true);
+            if(!dontRemoveAllTooltip)
             $('#' + this.id).tooltipster('show');
         });
     }
@@ -346,6 +358,7 @@ function highlightSpecificArea(controlType) {
         $('.fan-cl').each(function (el) {
             
             $('#' + this.id).mapster('set', true);
+            if(!dontRemoveAllTooltip)
             $('#' + this.id).tooltipster('show');
         });  
     }
@@ -357,6 +370,7 @@ function highlightSpecificArea(controlType) {
         $('.sensors').each(function (el) {
             
             $('#' + this.id).mapster('set', true);
+            if(!dontRemoveAllTooltip)
             $('#' + this.id).tooltipster('show');
         });  
     }
@@ -398,11 +412,14 @@ function removeAllTooltip(exceptArray){
 }
 
 
-function initFloorwiseDisplay(){
+function initFloorwiseDisplay(dontInitializeAndHideTooltip){
 
-    initializeTooltips();
+    if(!dontInitializeAndHideTooltip){
+      initializeTooltips();
+
+    }
     setTimeout(() => {
-        highlightSpecificArea(1);
+        highlightSpecificArea(1, dontInitializeAndHideTooltip);
         
     }, 1000);
     image.mapster({
