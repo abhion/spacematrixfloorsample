@@ -28,6 +28,12 @@ let thisDayChartCtx = document.querySelector('#thisDayChart').getContext('2d');
 let lastMonthPieChartCtx = document.querySelector('#lastMonthPieChart').getContext('2d');
 let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getContext('2d');
 
+window.addEventListener('orientationchange', function(){
+  setTimeout(() => {
+    $('map').imageMapResize();
+  }, 1000);
+})
+
 
 
 let doughnutObj = new Chart(doughnutChartCtx, {
