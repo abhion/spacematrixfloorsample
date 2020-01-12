@@ -31,6 +31,7 @@ let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getConte
 window.addEventListener('orientationchange', function(){
    
    initFloorwiseDisplay();
+   
  
 })
 
