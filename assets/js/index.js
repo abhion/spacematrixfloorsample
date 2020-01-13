@@ -9,9 +9,22 @@ const roomNames = ['Reception', 'Excellence', 'Responsibility', 'Innovation', 'P
 let groundFloorVavIds = ['excelVavId', 'innovationVavId', 'liftLobbyVavId', 'respVavId', 'valueVavId'];
 let groundFloorVavNames = ['Excellence VAV', 'Innovation VAV', 'Lift Lobby VAV', 'Responsibility VAV', 'Value VAV'];
 
-let groundFloorMainSelect = null, mainPageContainer = null, floorContainer = null, vavDescriptionContainerForTooltip = null;
+let groundFloorSensorIds = ['duct1SensorId','duct2SensorId','liftLobbyId','pantrySensorId'];
+let groundFloorSensorNames = ['Duct 1 sensor', 'Duct 2 sensor', 'Lift lobby sensor', 'Pantry sensor'];
 
-let minimizeBtn = null, currentlyActiveVavId = null, selectedVavDescTitle = null;
+let groundFloorFanIds = ['vrfFanId','pantryFanId','valueFanId'];
+let groundFloorFanNames = ['VRF Fan', 'Pantry Fan', 'Value Fan'];
+
+let fanDescContainerForTooltip = null;
+let selectedFanNameId = null;
+let selectedFanDesc = null;
+let homeIconContainer = null;
+
+let groundFloorMainSelect = null, mainPageContainer = null, floorContainer = null, floorWiseDisplayContainer = null, vavDescriptionContainerForTooltip = null;
+
+let minimizeBtn = null, currentlyActiveId = null, selectedVavDescTitle = null;
+
+let sensorDescContainerForTooltip = null, selectedSensorNameId = null;
 
 let tooltipIdsArray = ['receptionAreaId',
   'excelRoomId', 'excelVavId', 'innovationRoomId', 'innovationVavId', 'liftLobbyVavId',
@@ -31,7 +44,7 @@ let thisMonthPieChartCtx = document.querySelector('#thisMonthPieChart').getConte
 window.addEventListener('orientationchange', function () {
 
 
-  initFloorwiseDisplay(true);
+  // initializeTooltips();
 
 
 })
@@ -41,12 +54,12 @@ window.addEventListener('orientationchange', function () {
 let doughnutObj = new Chart(doughnutChartCtx, {
   type: 'doughnut',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -68,12 +81,12 @@ let doughnutObj = new Chart(doughnutChartCtx, {
 let thisHourPieObj = new Chart(thisHourPieChart, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -94,12 +107,12 @@ let thisHourPieObj = new Chart(thisHourPieChart, {
 let lastHourPieObj = new Chart(lastHourPieChartCtx, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -120,12 +133,12 @@ let lastHourPieObj = new Chart(lastHourPieChartCtx, {
 let lastDayPieChartObj = new Chart(lastDayPieChartCtx, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -146,12 +159,12 @@ let lastDayPieChartObj = new Chart(lastDayPieChartCtx, {
 let thisDayChartObj = new Chart(thisDayChartCtx, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -172,12 +185,12 @@ let thisDayChartObj = new Chart(thisDayChartCtx, {
 let lastMonthPieChartObj = new Chart(lastMonthPieChartCtx, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["#e4e421", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -198,12 +211,12 @@ let lastMonthPieChartObj = new Chart(lastMonthPieChartCtx, {
 let thisMonthPieChartObj = new Chart(thisMonthPieChartCtx, {
   type: 'pie',
   data: {
-    labels: ["Jan", "Feb", "March"],
+    labels: ["UPS Power", "LDA Power", "Raw Power", "Main Power"],
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86"],
-        data: [150, 220, 250]
+        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#ff0033'],
+        data: [150, 220, 250, 110]
       }
     ]
   },
@@ -237,11 +250,19 @@ $(document).ready(function () {
   groundFloorMainSelect = document.querySelector('#groundFloorMainSelect');
   mainPageContainer = document.querySelector('#mainPageContainer');
   floorContainer = document.querySelector('#floorContainer');
+  floorWiseDisplayContainer = document.querySelector('#floorWiseDisplayContainer');
   vavDescriptionContainerForTooltip = document.querySelector('#vavDescriptionContainerForTooltip');
   minimizeBtn = document.querySelector('#minimizeBtn');
   selectedVavDescTitle = document.querySelector('#selectedVavDescTitle');
+  sensorDescContainerForTooltip = document.querySelector('#sensorDescContainerForTooltip');
+  selectedSensorNameId = document.querySelector('#selectedSensorNameId');
 
-  let currentlyActiveControl = 'vav';
+  fanDescContainerForTooltip = document.querySelector('#fanDescContainerForTooltip');
+  selectedFanNameId = document.querySelector('#selectedFanNameId');
+  selectedFanDesc = document.querySelector('#selectedFanDesc');
+  homeIconContainer = document.querySelector('#homeIconContainer');
+
+  let currentlyActiveControl = 'VAV';
 
   showIndividualBtn.addEventListener('click', function () {
     this.classList.add('active');
@@ -255,10 +276,19 @@ $(document).ready(function () {
   //Show respective controls(vav, sensors...) with a border on click
   allControlBoxes.forEach(function (box) {
     box.addEventListener('click', function () {
+      currentlyActiveControl = $(this).data('name');
+      console.log(currentlyActiveControl);
+      
       highlightSpecificArea(this.id.split('-')[1]);
       const currentlyActive = document.querySelector('.all-controls-box.active');
       currentlyActive.classList.remove('active');
       this.classList.toggle('active');
+      //hide tooltip after some time so that collision can be avoided and viewed on hover
+      setTimeout(() => {
+        removeAllTooltip();
+        
+      }, 2000);
+
     })
   })
   //On clicking a vav show VAV description in tooltip
@@ -267,31 +297,100 @@ $(document).ready(function () {
       showVavData(vavId);
     })
   })
+
+  //On clicking a sensor, show sensor description in tooltip
+
+  groundFloorSensorIds.forEach(function(sensorId){
+    document.querySelector('#'+sensorId).addEventListener('click', function(){
+      showSensorData(this.id);
+    })
+  })
+
+  //On clicking a fan, show description in tooltip
+  groundFloorFanIds.forEach(function(fanId){
+    document.querySelector('#'+ fanId).addEventListener('click', function(){
+      showFanDesc(fanId);
+    })
+  })
+
   //hide or show room names
   hideShowRoomNameCheck.addEventListener('change', toggleRoomNameDisplay);
 
   //From main page, show floor wise  display with view controls when a floor's image is clicked
   groundFloorMainSelect.addEventListener('click', function () {
     mainPageContainer.classList.add('hide');
-    floorContainer.classList.remove('hide');
-    // initFloorwiseDisplay();
+    floorWiseDisplayContainer.classList.remove('hide');
+    initFloorwiseDisplay();
   })
 
-  //Minimize a floor's description and show the VAV's name
+  //Go to home page on clicking icon
+
+  homeIconContainer.addEventListener('click', function(){
+    floorWiseDisplayContainer.classList.add('hide');
+    mainPageContainer.classList.remove('hide');
+  })
+
+  //Minimize a floor's description and show the Control type's name
   minimizeBtn.addEventListener('click', function () {
-    $('#' + currentlyActiveVavId).tooltipster('content', groundFloorVavNames[groundFloorVavIds.indexOf(currentlyActiveVavId)]);
+    
+    let controlsNameArray = [], controlIdsArray = [];
+    
+    if(currentlyActiveControl === 'VAV'){
+      controlsNameArray = groundFloorVavNames;
+      controlIdsArray = groundFloorVavIds;
+    }
+
+    if(currentlyActiveControl === 'Fan'){
+      controlsNameArray = groundFloorFanNames;
+      controlIdsArray = groundFloorFanNames;
+    }
+    if(currentlyActiveControl === 'Sensor'){
+      controlsNameArray = groundFloorSensorNames;
+      controlIdsArray = groundFloorSensorIds;
+    }
+    
+
+
+    $('#' + currentlyActiveId).tooltipster('content', controlsNameArray[controlIdsArray.indexOf(currentlyActiveId)]);
     this.classList.add('hide-visibility');
   })
 
 
 });
+
+function showFanDesc(fanId){
+  $('#minimizeBtn').trigger('click');
+  fanDescContainerForTooltip.classList.remove('hide');
+  $('#' + fanId).tooltipster('content', fanDescContainerForTooltip);
+  currentlyActiveId = fanId;
+  // minimizeBtn.classList.remove('hide-visibility');
+  selectedFanNameId.innerText = groundFloorFanNames[groundFloorFanIds.indexOf(fanId)];
+}
+
+
+
 // show VAV description in Tooltip
 function showVavData(vavId) {
   $('#minimizeBtn').trigger('click');
+  vavDescriptionContainerForTooltip.classList.remove('hide');
   $('#' + vavId).tooltipster('content', vavDescriptionContainerForTooltip);
-  currentlyActiveVavId = vavId;
-  minimizeBtn.classList.remove('hide-visibility');
+  currentlyActiveId = vavId;
+  // minimizeBtn.classList.remove('hide-visibility');
   selectedVavDescTitle.innerText = groundFloorVavNames[groundFloorVavIds.indexOf(vavId)];
+}
+
+//show Sensor description in tooltip
+
+function showSensorData(sensorId){
+  $('#minimizeBtn').trigger('click');
+  sensorDescContainerForTooltip.classList.remove('hide');
+  currentlyActiveId = sensorId;
+  $('#' + sensorId).tooltipster('content', sensorDescContainerForTooltip);
+  selectedSensorValue.innerText = '25°C';
+  selectedSensorNameId.innerText = groundFloorSensorNames[groundFloorSensorIds.indexOf(sensorId)];
+  minimizeBtn.classList.remove('hide-visibility');
+  console.log($('#selectedSensorValue'));
+  
 }
 
 function toggleRoomNameDisplay() {
@@ -312,9 +411,15 @@ function initializeTooltips() {
     $('#' + toolTipId).tooltipster({
       theme: 'tooltipster-punk',
       trigger: 'custom',
-      triggerClose: {
-        mouseleave: false
-      }
+      triggerOpen: {
+        mouseenter: true
+    },
+    triggerClose: {
+      mouseleave: true
+    },
+    functionAfter: function(instance){
+      $('#minimizeBtn').trigger('click');
+    }
     })
   })
 }
@@ -412,7 +517,11 @@ function initFloorwiseDisplay() {
 
 
   setTimeout(() => {
-    highlightSpecificArea(1, true);
+    highlightSpecificArea(1);
+
+    setTimeout(() => {
+      removeAllTooltip();
+    }, 2000);
 
   }, 1000);
   image.mapster({
@@ -420,6 +529,14 @@ function initFloorwiseDisplay() {
     strokeWidth: 2,
     stroke: true,
     fill: false,
+    onClick: function(data){
+      console.log(data, currentlyActiveId);
+      setTimeout(() => {
+        $('#'+currentlyActiveId).mapster('select')
+        console.log($(data));
+        
+      }, 100);
+    },
     areas: [{ key: 'reception', fillColor: "f70505" }, { key: 'excelRoom', strokeColor: "f70505" }, { key: 'respRoom', strokeColor: "f70505" },
     { key: 'excellenceVav', strokeColor: "f70505" }, { key: 'innovationRoom', strokeColor: "f70505" }, { key: 'innovationVav', strokeColor: "f70505" },
     { key: 'liftLobbyVav', strokeColor: "f70505" }, { key: 'resproom', strokeColor: "f70505" }, { key: 'respVav', strokeColor: "f70505" },
