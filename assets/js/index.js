@@ -67,6 +67,12 @@ let tooltipIdsArray = ['receptionAreaId',
   'floor3d1sensorId','floor3d2sensorId','floor3Co2Id','floor3VavId','floor3ExhFanId','floor3FreshAirFanId','floor3VrfFanId'
 ];
 
+let lastHourUpsArray = [], thisHourUpsArray = [], lastDayUpsArray = [], todayUpsArray = [],
+  lastHourLightingArray = [], thisHourLightingArray = [], lastDayLightingArray = [], todayLightingArray = [],
+  lastHourRawArray = [], thisHourRawArray = [], lastDayRawArray = [], todayRawArray = [],
+  lastHourDgArray = [], thisHourDgArray = [], lastDayDgArray = [], todayDgArray = [];
+  
+
 let doughnutChartCtx = document.querySelector('#doughnutChart').getContext('2d');
 
 let lastHourPieChartCtx = document.querySelector('#lastHourPieChart').getContext('2d');
@@ -304,7 +310,7 @@ $(document).ready(function () {
   floorNameTxtId = document.querySelector('#floorNameTxtId');
   selectedSensorDesc = document.querySelector('#selectedSensorDesc');
 
-  if(!floorWiseDisplayContainer.classList.contains('hide'))
+  
   scrollToTopOfPage();
   setTimeout(function(){
     scrollDownBy(90);
@@ -701,6 +707,7 @@ function removeAllTooltip(exceptArray) {
 }
 
 function scrollToTopOfPage(){
+  if(!floorWiseDisplayContainer.classList.contains('hide'))
   $('html, body').animate({scrollTop: 0}, "slow");
 }
 
@@ -721,7 +728,7 @@ function initFloorwiseDisplay(floorNo) {
 
     setTimeout(() => {
       removeAllTooltip();
-    }, 2000);
+    }, 1000);
 
   }, 1000);
 
@@ -825,7 +832,154 @@ function setImageMapsterForFloor(floorNo){
     })
   }
 }
+function calculateChartValues() {
+  
+  
+  let localStorageObj = JSON.parse(localStorage.getItem('energy_meter'));
+  if (localStorageObj) {
+      for (const key in localStorageObj) {
+          if (localStorageObj.hasOwnProperty(key)) {
+              localStorageObj[key].forEach(function (obj) {
+                  obj["time"] = moment(moment(obj["time"]).utcOffset('+0530').format('YYYY-MM-DD HH:mm'));
+                  
+              })
+              
+          }
+      }
+  }
+  debugger
+  if(!localStorageObj.ups){
+      localStorageObj.ups = [];
+  }
+  if (localStorageObj.ups) {
+      localStorageObj.ups.forEach(function (obj) {
+          let theTime = obj["time"];
+          debugger
 
+          if (theTime.startOf) {
+              let startOfHour = theTime.startOf('hour').format('H');
+              let yesterdayStart = moment().subtract(1, 'days').startOf('day');
+              let todayStart = moment().startOf('day');
+              let lastHourStart = moment().startOf('hour').subtract(1, 'hour');
+              let lastHourEnd = moment().startOf('hour').subtract(1, 'seconds');
+
+              let thisHourStart = moment().startOf('hour');
+
+              if (theTime.isBetween(yesterdayStart, todayStart)) {
+                  lastDayUpsArray.push(obj);
+              }
+              else if (theTime.isBetween(lastHourStart, lastHourEnd)) {
+                  lastHourUpsArray.push(obj);
+              }
+              else if (theTime.isSameOrAfter(thisHourStart, 'hour')) {
+                  thisHourUpsArray.push(obj);
+              }
+              if (theTime.isSameOrAfter(moment().startOf('day'), 'day')) {
+                  todayUpsArray.push(obj)
+              }
+          }
+      })
+      console.log(lastDayUpsArray)
+      console.log(lastHourUpsArray)
+      console.log(thisHourUpsArray)
+      console.log(todayUpsArray)
+  }
+  if(!localStorageObj.raw){
+      localStorageObj.raw = [];
+  }
+  if (localStorageObj.raw) {
+      localStorageObj.raw.forEach(function (obj) {
+          let theTime = obj["time"];
+
+          if (theTime.startOf) {
+              let startOfHour = theTime.startOf('hour').format('H');
+              let yesterdayStart = moment().subtract(1, 'days').startOf('day');
+              let todayStart = moment().startOf('day');
+              let lastHourStart = moment().startOf('hour').subtract(1, 'hour');
+              let lastHourEnd = moment().startOf('hour').subtract(1, 'seconds');
+
+              let thisHourStart = moment().startOf('hour');
+
+              if (theTime.isBetween(yesterdayStart, todayStart)) {
+                  lastDayRawArray.push(obj);
+              }
+              else if (theTime.isBetween(lastHourStart, lastHourEnd)) {
+                  lastHourRawArray.push(obj);
+              }
+              else if (theTime.isSameOrAfter(thisHourStart, 'hour')) {
+                  thisHourRawArray.push(obj);
+              }
+              if (theTime.isSameOrAfter(moment().startOf('day'), 'day')) {
+                  todayRawArray.push(obj)
+              }
+          }
+      })
+  }
+  if(!localStorageObj.dg){
+      localStorageObj.dg = [];
+  }
+  if (localStorageObj.dg) {
+      localStorageObj.ups.forEach(function (obj) {
+          let theTime = obj["time"];
+
+          if (theTime.startOf) {
+              let startOfHour = theTime.startOf('hour').format('H');
+              let yesterdayStart = moment().subtract(1, 'days').startOf('day');
+              let todayStart = moment().startOf('day');
+              let lastHourStart = moment().startOf('hour').subtract(1, 'hour');
+              let lastHourEnd = moment().startOf('hour').subtract(1, 'seconds');
+
+              let thisHourStart = moment().startOf('hour');
+
+              if (theTime.isBetween(yesterdayStart, todayStart)) {
+                  lastDayDgArray.push(obj);
+              }
+              else if (theTime.isBetween(lastHourStart, lastHourEnd)) {
+                  lastHourDgArray.push(obj);
+              }
+              else if (theTime.isSameOrAfter(thisHourStart, 'hour')) {
+                  thisHourDgArray.push(obj);
+              }
+              if (theTime.isSameOrAfter(moment().startOf('day'), 'day')) {
+                  todayDgArray.push(obj)
+              }
+          }
+      })
+  }
+  if(!localStorageObj.ltg){
+      localStorageObj.ltg = [];
+  }
+  if (localStorageObj.ltg) {
+      localStorageObj.ltg.forEach(function (obj) {
+          let theTime = obj["time"];
+
+          if (theTime.startOf) {
+              let startOfHour = theTime.startOf('hour').format('H');
+              let yesterdayStart = moment().subtract(1, 'days').startOf('day');
+              let todayStart = moment().startOf('day');
+              let lastHourStart = moment().startOf('hour').subtract(1, 'hour');
+              let lastHourEnd = moment().startOf('hour').subtract(1, 'seconds');
+
+              let thisHourStart = moment().startOf('hour');
+
+              if (theTime.isBetween(yesterdayStart, todayStart)) {
+                  lastDayLightingArray.push(obj);
+              }
+              else if (theTime.isBetween(lastHourStart, lastHourEnd)) {
+                  lastHourLightingArray.push(obj);
+              }
+              else if (theTime.isSameOrAfter(thisHourStart, 'hour')) {
+                  thisHourLightingArray.push(obj);
+              }
+              if (theTime.isSameOrAfter(moment().startOf('day'), 'day')) {
+                  todayDgArray.push(obj)
+              }
+          }
+      })
+  }
+  updateChart();
+
+}
 
 setTimeout(() => {
   // $('#receptionAreaId').tooltipster('show');
