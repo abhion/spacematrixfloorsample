@@ -1,13 +1,13 @@
 let clientId = localStorage.getItem('clientId') || 'client-' + randomIntFromInterval(1, 10000);
-var client = new Paho.Client('164.52.193.83', 1884, clientId);
+var client = new Paho.Client('115.114.49.252', 1884, clientId);
 
-console.log(client);
+// console.log(client);
 
 
 client.onConnectionLost = onConnectionLost;
 client.onMessageArrived = onMessageArrived;
 
-client.connect({ onSuccess: onConnect, useSSL: true });
+client.connect({ onSuccess: onConnect, useSSL: false });
 
 
 
@@ -18,7 +18,8 @@ function randomIntFromInterval(min, max) { // min and max included
 
 function onConnect() {
     console.log("onConnect");
-    client.subscribe("room/temp");
+    client.subscribe("EM/UPS1");
+    client.subscribe("EM/UPS2");
 
 }
 
@@ -30,6 +31,8 @@ function onConnectionLost(responseObject) {
 function onMessageArrived(message) {
     // $('#room1Id').tooltipster('content', 'Room 1');
     // $('#room2Id').tooltipster('content', 'Room 2');
+    console.log(message.payloadString);
+    
     if(message["topic"] === "room/temp"){
         let supplyTemp = (+message["payloadString"]).toFixed(2);
         // $('#suppTemp').text('Supply temp: ' + supplyTemp + '°C');
