@@ -378,8 +378,8 @@
                         <area class="sensors to-highlight floor0" data-name="ductTwoSensor, sensor, all"
                             id="duct2SensorId" target="" alt="Duct 2 Sensor" title="Duct 2 Sensor" href=""
                             coords="789,244,11" shape="circle">
-                        <area class="sensors to-highlight floor0" data-name="liftLobbySensor, sensor, all"
-                            id="liftLobbyId" target="" alt="Lift lobby Sensor" title="Lift lobby Sensor" href=""
+                        <area class="sensors to-highlight floor0 co2sensor" data-name="liftLobbySensor, sensor, all"
+                            id="liftLobbyId" target="" alt="Lift lobby Sensor" title="CO2 Sensor" href=""
                             coords="853,300,10" shape="circle">
                         <area class="sensors to-highlight floor0" data-name="pantrySensor, sensor, all"
                             id="pantrySensorId" target="" alt="Pantry Sensor" title="Pantry Sensor" href=""
@@ -402,7 +402,7 @@
                             alt="Exhaust fan" title="Exhaust fan" href="#" coords="1494,220,1531,255" shape="rect">
                         <area id="floor1FreshAirId" data-name="freshairfan" class="floor1 fan-cl to-highlight" target=""
                             alt="Fresh Air fan" title="Fresh Air fan" href="#" coords="1603,538,1644,570" shape="rect">
-                        <area id="floor1Co2SensorId" data-name="co2sensor" class="floor1 sensors to-highlight" target=""
+                        <area id="floor1Co2SensorId" data-name="co2sensor" class="floor1 sensors to-highlight co2sensor" target=""
                             alt="CO2 sensor" title="CO2 sensor" href="#" coords="1241,600,14" shape="circle">
                     </map>
                     <!--End Floor 1 MAP-->
@@ -416,7 +416,7 @@
                             title="VAV 07" href="#" coords="981,153,1018,189" shape="rect">
                         <area id="floor2ExhFanId" class="floor2 fan-cl to-highlight" data-name="floor2ExhFan" target=""
                             alt="Exhaust fan" title="Exhaust fan" href="#" coords="1434,109,1464,130" shape="rect">
-                        <area id="floor2Co2SensorId" class="floor2 sensors to-highlight" data-name="floor2Co2Sensor" target=""
+                        <area id="floor2Co2SensorId" class="floor2 sensors to-highlight co2sensor" data-name="floor2Co2Sensor" target=""
                             alt="CO2 sensor" title="CO2 sensor" href="#" coords="1060,414,17" shape="circle">
                         <area id="floor2VrfId" class="floor2 fan-cl to-highlight" data-name="floor2Vrf" target="" alt="VRF Fan"
                             title="VRF Fan" href="#" coords="1504,282,1589,345" shape="rect">
@@ -430,7 +430,7 @@
                             alt="Duct 1 sensor" title="Duct 1 sensor" href="" coords="1124,249,14" shape="circle">
                         <area id="floor3d2sensorId" data-name="floor3d2sensor" class="floor3 sensors to-highlight" target=""
                             alt="Duct 2 sensor" title="Duct 2 sensor" href="" coords="1250,324,17" shape="circle">
-                        <area id="floor3Co2Id" data-name="floor3Co2" class="floor3 sensors to-highlight" target="" alt="CO2 sensor"
+                        <area id="floor3Co2Id" data-name="floor3Co2" class="floor3 sensors to-highlight co2sensor" target="" alt="CO2 sensor"
                             title="CO2 sensor" href="" coords="1045,381,15" shape="circle">
                         <area id="floor3VavId" data-name="floor3Vav" class="floor3 vav-cl to-highlight" target="" alt="VAV 8"
                             title="VAV 08" href="" coords="1001,124,1050,165" shape="rect">
@@ -452,7 +452,7 @@
 
                     </div>
 
-                    <div id="controlTypeContainer">
+                    <div id="controlTypeContainer" class="hide">
                         <div class="control-type-box active" id="showAllBtn">
                             <button class="control-type-box-btn active">
                                 Show All Values
@@ -558,7 +558,7 @@
     <script src="assets/js/Chart.bundle.min.js"></script>
     <script src="assets/js/tooltipster.bundle.min.js"></script>
     <script src="assets/js/jquery.imagemapster.min.js"></script>
-
+    <script src="assets/js/moment.min.js"></script>
     <script src="https://unpkg.com/popper.js@1"></script>
     <script src="https://unpkg.com/tippy.js@5/dist/tippy-bundle.iife.js"></script>
     <script src="assets/js/paho-mqtt.js"></script>

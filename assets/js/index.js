@@ -11,7 +11,7 @@ let groundFloorVavIds = ['excelVavId', 'innovationVavId', 'liftLobbyVavId', 'res
 let groundFloorVavNames = ['VAV 04', 'VAV 03', 'VAV 05', 'VAV 02', 'VAV 01'];
 
 let groundFloorSensorIds = ['duct1SensorId','duct2SensorId','liftLobbyId','pantrySensorId'];
-let groundFloorSensorNames = ['Duct 1 sensor', 'Duct 2 sensor', 'Lift lobby sensor', 'Pantry sensor'];
+let groundFloorSensorNames = ['Duct 1 sensor', 'Duct 2 sensor', 'CO2 sensor', 'Pantry sensor'];
 
 let groundFloorFanIds = ['vrfFanId','pantryFanId','valueFanId'];
 let groundFloorFanNames = ['VRF Fan', 'Pantry Fan', 'Value Fan'];
@@ -50,7 +50,7 @@ let fanDescContainerForTooltip = null;
 let selectedFanNameId = null;
 let selectedFanDesc = null;
 let homeIconContainer = null;
-
+let selectedSensorDesc = null;
 let groundFloorMainSelect = null, firstFloorMainSelect = null, secondFloorMainSelect = null;
 thirdFloorMainSelect = null, mainPageContainer = null, floorContainer = null, floorWiseDisplayContainer = null, vavDescriptionContainerForTooltip = null;
 
@@ -93,7 +93,7 @@ let doughnutObj = new Chart(doughnutChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -120,7 +120,7 @@ let thisHourPieObj = new Chart(thisHourPieChart, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -146,7 +146,7 @@ let lastHourPieObj = new Chart(lastHourPieChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -172,7 +172,7 @@ let lastDayPieChartObj = new Chart(lastDayPieChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -198,7 +198,7 @@ let thisDayChartObj = new Chart(thisDayChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -224,7 +224,7 @@ let lastMonthPieChartObj = new Chart(lastMonthPieChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["#e4e421", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e4e421", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -250,7 +250,7 @@ let thisMonthPieChartObj = new Chart(thisMonthPieChartCtx, {
     datasets: [
       {
         label: "kWh",
-        backgroundColor: ["yellow", "#00f3ff", "#ff6d86", '#21f179'],
+        backgroundColor: ["#e8e800", "#00f3ff", "#f5fff1", '#21f179'],
         data: [150, 220, 250, 110]
       }
     ]
@@ -275,12 +275,7 @@ let currentlyActiveControl = 'VAV';
 // initializeTooltips();
 
 $(document).ready(function () {
-
-  scrollToTopOfPage();
-  setTimeout(function(){
-    scrollDownBy(90);
-  }, 1000)
-
+ 
   hideShowRoomNameCheck = document.querySelector('#showRoomNameCheck');
   showAllBtn = document.querySelector('#showAllBtn');
   showIndividualBtn = document.querySelector('#showIndividualBtn');
@@ -307,8 +302,13 @@ $(document).ready(function () {
 
   firstFloorVavId = document.querySelector('#floor1VavId');
   floorNameTxtId = document.querySelector('#floorNameTxtId');
+  selectedSensorDesc = document.querySelector('#selectedSensorDesc');
 
-  
+  if(!floorWiseDisplayContainer.classList.contains('hide'))
+  scrollToTopOfPage();
+  setTimeout(function(){
+    scrollDownBy(90);
+  }, 1000)
 
   showIndividualBtn.addEventListener('click', function () {
     this.classList.add('active');
@@ -564,13 +564,21 @@ function showVavData(vavId, idArray, nameArray) {
 
 function showSensorData(sensorId, idArray, nameArray){
   $('#minimizeBtn').trigger('click');
+  debugger
   sensorDescContainerForTooltip.classList.remove('hide');
   currentlyActiveId = sensorId;
   $('#' + sensorId).tooltipster('content', sensorDescContainerForTooltip);
-  selectedSensorValue.innerText = '25°C';
+  console.log(document.querySelector('#' + sensorId).classList.contains('co2sensor'));
+  
+  if(document.querySelector('#' + sensorId).classList.contains('co2sensor')){
+    selectedSensorDesc.innerHTML = '<div>'+'200ppm'+'</div>'
+  }
+  else{
+    selectedSensorDesc.innerHTML = '<div>Temp: '+'23°C'+'</div>'
+
+  }
   selectedSensorNameId.innerText = nameArray[idArray.indexOf(sensorId)];
   // minimizeBtn.classList.remove('hide-visibility');
-  console.log($('#selectedSensorValue'));
   
 }
 
@@ -724,6 +732,7 @@ function initFloorwiseDisplay(floorNo) {
 
 function setImageMapsterForFloor(floorNo){
   if(floorNo == 0){
+    hideShowRoomName.classList.remove('hide');
     image.mapster('unbind');
     image.mapster({
       mapKey: 'data-name',
@@ -749,6 +758,7 @@ function setImageMapsterForFloor(floorNo){
     })
   }
   if(floorNo == 1){
+    hideShowRoomName.classList.add('hide');
     image.mapster('unbind');
     image.mapster({
       mapKey: 'data-name',
@@ -768,7 +778,7 @@ function setImageMapsterForFloor(floorNo){
     })
   }
   if(floorNo == 2){
-    
+    hideShowRoomName.classList.add('hide');
     image.mapster('unbind');
     image.mapster({
       mapKey: 'data-name',
@@ -788,6 +798,7 @@ function setImageMapsterForFloor(floorNo){
     })
   }
   if(floorNo == 3){
+    hideShowRoomName.classList.add('hide');
     image.mapster('unbind');
     image.mapster({
       mapKey: 'data-name',
