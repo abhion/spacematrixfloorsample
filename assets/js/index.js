@@ -671,22 +671,6 @@ function highlightSpecificArea(controlType, floorNo) {
   }
 
 
-
-
-  // image.mapster('set', true);
-  // $('#duct1SensorId').mapster('set', true);
-  // $('#duct2SensorId').mapster('set', true);
-  // $('#valueSensorId').mapster('set', true);
-  // $('#receptionSensorId').mapster('set', true);
-  // image.mapster('set_options', {
-  //     fillColor: 'ffffff',
-  //     fillOpacity: 0.6,
-  //     stroke: true,
-  //     strokeWidth: 2,
-  //     strokeColor: 'ffffff',
-  //     areas: [{key: 'reception', strokeColor: "ffffff"}, {key: 'excelRoom', strokeColor: "ffffff"}]
-  // });
-
 }
 //remove previously selected control type before highlighting new control type
 function removeAllHighlight() {
@@ -764,73 +748,7 @@ function setImageMapsterForFloor(floorNo){
       ]
     })
   }
-  if(floorNo == 1){
-    hideShowRoomName.classList.add('hide');
-    image.mapster('unbind');
-    image.mapster({
-      mapKey: 'data-name',
-      strokeWidth: 2,
-      stroke: true,
-      strokeColor: "f70505",
-      fill: false,
-      onClick: function(data){
-        console.log(data, currentlyActiveId);
-        setTimeout(() => {
-          $('#'+currentlyActiveId).mapster('select')
-          console.log($(data));
-          
-        }, 100);
-      },
-      areas: [{key: 'vrffan1'}, {key: 'vrffan2'}, {key: 'd1sensor'}, {key: 'd2sensor'}, {key: 'vav1'}, {key: 'exhaustfan'}, {key: 'freshairfan'}, {key: 'co2sensor'}]
-    })
-  }
-  if(floorNo == 2){
-    hideShowRoomName.classList.add('hide');
-    image.mapster('unbind');
-    image.mapster({
-      mapKey: 'data-name',
-      strokeWidth: 2,
-      stroke: true,
-      strokeColor: "f70505",
-      fill: false,
-      onClick: function(data){
-        console.log(data, currentlyActiveId);
-        setTimeout(() => {
-          $('#'+currentlyActiveId).mapster('select')
-          console.log($(data));
-          
-        }, 100);
-      },
-      areas: [{key: 'floor2d1sensor'}, {key: 'floor2d2sensor'}, {key: 'floor2VavId'}, {key: 'floor2ExhFan'}, {key: 'floor2Co2Sensor'}, {key: 'floor2Vrf'}, {key: 'floor2FreshAirId'}]
-    })
-  }
-  if(floorNo == 3){
-    hideShowRoomName.classList.add('hide');
-    image.mapster('unbind');
-    image.mapster({
-      mapKey: 'data-name',
-      strokeWidth: 2,
-      stroke: true,
-      fill: false,
-      onClick: function(data){
-        console.log(data, currentlyActiveId);
-        setTimeout(() => {
-          $('#'+currentlyActiveId).mapster('select')
-          console.log($(data));
-          
-        }, 100);
-      },
-     areas: [
-       {key: 'floor3d1sensor'},
-       {key: 'floor3d2sensor'},
-       {key: 'floor3Co2'},
-       {key: 'floor3Vav'},
-       {key: 'floor3ExhFan'},
-       {key: 'floor3FreshAirFan'},
-       {key: 'floor3VrfFan'}
-      ]
-    })
-  }
+  
 }
 function calculateChartValues() {
   
